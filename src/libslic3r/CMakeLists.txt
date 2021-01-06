@@ -99,6 +99,8 @@ add_library(libslic3r STATIC
     GCode/WipeTower.hpp
     GCode/GCodeProcessor.cpp
     GCode/GCodeProcessor.hpp
+    GCode/AvoidCrossingPerimeters.cpp
+    GCode/AvoidCrossingPerimeters.hpp
     GCode.cpp
     GCode.hpp
     GCodeReader.cpp
@@ -126,8 +128,6 @@ add_library(libslic3r STATIC
     CustomGCode.hpp
     Arrange.hpp
     Arrange.cpp
-    MotionPlanner.cpp
-    MotionPlanner.hpp
     MultiPoint.cpp
     MultiPoint.hpp
     MutablePriorityQueue.hpp
@@ -159,8 +159,8 @@ add_library(libslic3r STATIC
     PrintConfig.hpp
     PrintObject.cpp
     PrintRegion.cpp
-    PNGRead.hpp
-    PNGRead.cpp
+    PNGReadWrite.hpp
+    PNGReadWrite.cpp
     Semver.cpp
     ShortestPath.cpp
     ShortestPath.hpp

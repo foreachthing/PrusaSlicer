@@ -259,7 +259,14 @@ public:
 	{
 		const Slic3r::Points &ipts = *m_contours[contour_and_segment_idx.first];
 		size_t ipt = contour_and_segment_idx.second;
-		return std::pair<const Slic3r::Point&, const Slic3r::Point&>(ipts[ipt], ipts[(ipt + 1 == ipts.size()) ? 0 : ipt + 1]);
+		return std::pair<const Slic3r::Point&, const Slic3r::Point&>(ipts[ipt], ipts[ipt + 1 == ipts.size() ? 0 : ipt + 1]);
+	}
+
+	Line line(const std::pair<size_t, size_t> &contour_and_segment_idx) const
+	{
+		const Slic3r::Points &ipts = *m_contours[contour_and_segment_idx.first];
+		size_t ipt = contour_and_segment_idx.second;
+		return Line(ipts[ipt], ipts[ipt + 1 == ipts.size() ? 0 : ipt + 1]);
 	}
 
 protected:
@@ -309,10 +316,8 @@ protected:
 	std::vector<float>							m_signed_distance_field;
 };
 
-#if 0
 // Debugging utility. Save the signed distance field.
-extern void save_png(const Grid &grid, const BoundingBox &bbox, coord_t resolution, const char *path);
-#endif /* SLIC3R_GUI */
+extern void save_png(const Grid &grid, const BoundingBox &bbox, coord_t resolution, const char *path, size_t scale = 1);
 
 } // namespace EdgeGrid
 

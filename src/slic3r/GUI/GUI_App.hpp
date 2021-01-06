@@ -109,6 +109,9 @@ private:
     bool            m_app_conf_exists{ false };
     EAppMode        m_app_mode{ EAppMode::Editor };
     bool            m_is_recreating_gui{ false };
+#ifdef __linux__
+    bool            m_opengl_initialized{ false };
+#endif
 
     wxColour        m_color_label_modified;
     wxColour        m_color_label_sys;
@@ -205,8 +208,9 @@ public:
 
     void            add_config_menu(wxMenuBar *menu);
     bool            check_unsaved_changes(const wxString &header = wxString());
+    bool            check_print_host_queue();
     bool            checked_tab(Tab* tab);
-    void            load_current_presets();
+    void            load_current_presets(bool check_printer_presets = true);
 
     wxString        current_language_code() const { return m_wxLocale->GetCanonicalName(); }
 	// Translate the language code to a code, for which Prusa Research maintains translations. Defaults to "en_US".
@@ -250,7 +254,7 @@ public:
 	RemovableDriveManager* removable_drive_manager() { return m_removable_drive_manager.get(); }
 	OtherInstanceMessageHandler* other_instance_message_handler() { return m_other_instance_message_handler.get(); }
     wxSingleInstanceChecker* single_instance_checker() {return m_single_instance_checker.get();}
-    
+
 	void        init_single_instance_checker(const std::string &name, const std::string &path);
 	void        set_instance_hash (const size_t hash) { m_instance_hash_int = hash; m_instance_hash_string = std::to_string(hash); }
     std::string get_instance_hash_string ()           { return m_instance_hash_string; }
@@ -274,6 +278,14 @@ public:
     bool is_gl_version_greater_or_equal_to(unsigned int major, unsigned int minor) const { return m_opengl_mgr.get_gl_info().is_version_greater_or_equal_to(major, minor); }
     bool is_glsl_version_greater_or_equal_to(unsigned int major, unsigned int minor) const { return m_opengl_mgr.get_gl_info().is_glsl_version_greater_or_equal_to(major, minor); }
 
+#if ENABLE_CUSTOMIZABLE_FILES_ASSOCIATION_ON_WIN
+#ifdef __WXMSW__
+    void            associate_3mf_files();
+    void            associate_stl_files();
+    void            associate_gcode_files();
+#endif // __WXMSW__
+#endif // ENABLE_CUSTOMIZABLE_FILES_ASSOCIATION_ON_WIN
+
 private:
     bool            on_init_inner();
 	void            init_app_config();
@@ -285,11 +297,14 @@ private:
     bool            config_wizard_startup();
 	void            check_updates(const bool verbose);
 
+#if !ENABLE_CUSTOMIZABLE_FILES_ASSOCIATION_ON_WIN
 #ifdef __WXMSW__
     void            associate_3mf_files();
     void            associate_gcode_files();
 #endif // __WXMSW__
+#endif // !ENABLE_CUSTOMIZABLE_FILES_ASSOCIATION_ON_WIN
 };
+
 DECLARE_APP(GUI_App)
 
 } // GUI
