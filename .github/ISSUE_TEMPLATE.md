@@ -30,7 +30,7 @@ _Describe the steps needed to reproduce the issue. If this is a command-line sli
 #### Expected behaviour
 _Describe your expected behaviour_
 
-#### Actual Results
+#### Actual behaviour
 * _Describe current behaviour_
   * _Screenshots from __*PrusaSlicer*__ preview are preferred_
 
